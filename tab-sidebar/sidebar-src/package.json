@@ -1,0 +1,46 @@
+{
+  "name": "sidebar-src",
+  "private": true,
+  "version": "0.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "buildWithoutTsc": "vite build",
+    "start": "ls src/**/*.{tsx,ts} | entr -r pnpm buildWithoutTsc",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-spring/web": "^9.7.3",
+    "autoprefixer": "^10.4.14",
+    "classnames": "^2.3.2",
+    "postcss": "^8.4.27",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
+    "tailwindcss": "^3.3.3",
+    "uuid": "^9.0.0",
+    "zustand": "^4.3.9"
+  },
+  "devDependencies": {
+    "@groww-tech/eslint-config": "latest",
+    "@groww-tech/eslint-plugin-internal": "latest",
+    "@types/firefox": "^0.0.31",
+    "@types/firefox-webext-browser": "^111.0.1",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "eslint": "^8.45.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import-newlines": "latest",
+    "eslint-plugin-react": "latest",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  }
+}
