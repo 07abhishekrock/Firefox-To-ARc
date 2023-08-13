@@ -40,6 +40,16 @@
 			"suggested_key": {
 				"default": "MacCtrl+Ctrl+N"
 			}
+		},
+		"switch-profile-right": {
+			"suggested_key": {
+				"default": "MacCtrl+Ctrl+L"
+			}
+		},
+		"switch-profile-left": {
+			"suggested_key": {
+				"default": "MacCtrl+Ctrl+H"
+			}
 		}
   }
 

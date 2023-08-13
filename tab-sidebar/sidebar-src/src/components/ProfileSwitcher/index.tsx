@@ -1,38 +1,12 @@
 import { animated } from '@react-spring/web';
-import React, {
-  SetStateAction,
-  Dispatch,
-  useEffect,
-  useCallback
-} from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useCurrentWindow } from '../../hooks/useCurrentWindow';
 import { useDefaultAndSelectedProfile } from '../../hooks/useDefaultAndSelectedProfile';
-import { useFunkySwitchAnimate } from '../../hooks/useFunkySwitchAnimate';
 import { Profile, useGetProfiles } from '../../hooks/useGetProfiles';
 
 
-const ProfileSwitcherContent = ({ profiles, setProfiles }: { profiles: Profile[]; setProfiles: Dispatch<SetStateAction<Profile[]>> }) => {
+const ProfileSwitcherContent = ({ profiles }: { profiles: Profile[] }) => {
   const { lastSelectedProfileKey: selectedProfile, defaultProfile, changeLastSelectedProfile } = useDefaultAndSelectedProfile();
-  const {
-    onItemClick,
-    exitAnimateIndex,
-    entryValue,
-    exitSpring,
-    entrySpring,
-    fillSpring,
-    isFillAnimating
-  } = useFunkySwitchAnimate({
-    items: profiles,
-    setItems: setProfiles,
-    itemWidth: 80,
-    onAnimationComplete: (newProfile) => {
-      changeLastSelectedProfile(newProfile);
-    }
-  });
-
-  const commonClassName = 'items-center w-[80px] text-[12px] gap-1 pr-[5px] inline-flex';
-  const spanClassName = 'grow block text-center p-1 rounded-lg bg-nord3';
-  const spanClassNameSelected = spanClassName + ' bg-red';
 
   useCurrentWindow(
     useCallback((currentWindow, closedWindowId) => {
@@ -46,70 +20,57 @@ const ProfileSwitcherContent = ({ profiles, setProfiles }: { profiles: Profile[]
   useEffect(() => {
     if (!selectedProfile) {
       if (defaultProfile) {
-        const indexOfProfile = profiles.findIndex(s => s.name === defaultProfile.name);
-
-        setProfiles(old => {
-          return [
-            { ...defaultProfile, id: defaultProfile.name },
-            ...old.slice(0, indexOfProfile),
-            ...old.slice(indexOfProfile + 1)
-          ];
-        });
-
         changeLastSelectedProfile(defaultProfile);
       }
 
     } else {
-      const indexOfProfile = profiles.findIndex(s => s.name === selectedProfile.name);
-
-      setProfiles(old => {
-        return [
-          { ...selectedProfile, id: selectedProfile.name },
-          ...old.slice(0, indexOfProfile),
-          ...old.slice(indexOfProfile + 1)
-        ];
-      });
-
       changeLastSelectedProfile(selectedProfile);
     }
 
-  }, []);
+    if (typeof browser !== 'undefined') {
+      const onSwitchCommands = (command: string) => {
+
+        const currentIndex = profiles.findIndex(s => s.id === selectedProfile?.name);
+
+        if (command === 'switch-profile-right') {
+          changeLastSelectedProfile(profiles[(currentIndex + 1) % profiles.length]);
+
+        } else if (command === 'switch-profile-left') {
+          if (currentIndex === 0) {
+            changeLastSelectedProfile(profiles[profiles.length - 1]);
+
+          } else {
+            changeLastSelectedProfile(profiles[currentIndex - 1]);
+          }
+        }
+      };
+
+      browser.commands.onCommand.addListener(onSwitchCommands);
+
+      return () => {
+        browser.commands.onCommand.removeListener(onSwitchCommands);
+      };
+
+    }
+
+  }, [ selectedProfile, profiles, defaultProfile ]);
 
   return <div className="bg-nord1 pt-2">
     <div className="relative bg-nord1 overflow-hidden">
       {
-        profiles.map((profile, index) => {
+        profiles.map((profile) => {
 
           const isProfileSelected = selectedProfile?.name === profile.id;
 
-          if (index === exitAnimateIndex) {
-            return <animated.div className={commonClassName}
-              key={profile.id}
-              style={exitSpring}
-            >
-              <span className={spanClassName}>{profile.name}</span>
-            </animated.div>;
-          }
-
-          if (exitAnimateIndex && index < exitAnimateIndex && isFillAnimating) {
-            return <animated.div className={commonClassName}
-              style={fillSpring}
-              key={profile.id}
-            >
-              <span className={spanClassName}>{profile.name}</span>
-            </animated.div>;
-          }
-
-
           return <animated.div key={profile.name}
-            className={commonClassName}
-            onClick={
-              () => {
-                onItemClick(profile.id);
-              }
-            }
+            className='items-center w-[80px] text-[12px] gap-1 pr-[5px] inline-flex transition-all'
           >
-            <span className={isProfileSelected ? spanClassNameSelected : spanClassName}
+            <span className='grow block text-center p-1 rounded-lg bg-nord3 transition-all cursor-pointer'
+              onClick={
+                () => {
+                  changeLastSelectedProfile(profile);
+                }
+              }
               style={
                 {
                   background: isProfileSelected ? '#bf616a' : ''
@@ -120,24 +81,16 @@ const ProfileSwitcherContent = ({ profiles, setProfiles }: { profiles: Profile[]
         })
       }
 
-      {
-        entryValue && <animated.div className={commonClassName.concat(' absolute left-0 top-0 inline-block')}
-          style={entrySpring}
-        >
-          <span className={spanClassName}>{entryValue.name}</span>
-        </animated.div>
-      }
     </div>
   </div>;
 };
 
 
 const ProfileSwitcher = () => {
-  const { profiles, setProfiles } = useGetProfiles();
+  const { profiles } = useGetProfiles();
 
   return <ProfileSwitcherContent key={profiles.map(s => s.name).join('-')}
     profiles={profiles}
-    setProfiles={setProfiles}
   />;
 
 };
