@@ -14,6 +14,7 @@ export default {
       nord4: '#d8dee9',
       nord5: '#e5e9f0',
       nord6: '#eceff4',
+      nord12: '#d08770',
       nord15: '#b48ead',
       focusedClr: 'rgba(216, 222, 233, 0.2)',
       focusedClr2: 'rgba(216, 222, 233, 0.05)'

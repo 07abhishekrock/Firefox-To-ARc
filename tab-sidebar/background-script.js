@@ -1,4 +1,18 @@
+const safeJsonParse = (value)=>{
+	try{
+		const data = JSON.parse(value);
+		return data;
+	}
+	catch(e){
+		console.error(e);
+		return null;
+	}
+}
+
+
 if(typeof browser !== 'undefined'){
+
+	const PROFILE_KEY = 'default-profile-key';
 
 	let previousTabId = null;
 
@@ -20,6 +34,29 @@ if(typeof browser !== 'undefined'){
 				const currentTab = tabs[0];
 				currentTab && currentTab.id && browser.tabs.remove([currentTab.id]);
 			})
+		}
+
+		if(command === 'create-new-tab-container'){
+			browser.storage.local
+				.get(PROFILE_KEY)
+				.then((value)=>{
+					const data = safeJsonParse(value[PROFILE_KEY])
+					if(data){
+						if(data?.state?.lastSelectedProfileKey){
+							// last selected profile exists
+							browser.tabs.create({
+								url: 'https://google.in',
+								cookieStoreId: data.state.lastSelectedProfileKey.cookieStoreId
+							})
+						}
+					}
+					else{
+						browser.tabs.create({
+							url: 'https://google.in'
+						})
+					}
+				}
+			);
 		}
 
 	})

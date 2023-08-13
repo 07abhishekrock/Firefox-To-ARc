@@ -12,7 +12,14 @@
     "default_title" : "Firefox To Arc",
     "default_panel": "./sidebar-src/dist/index.html"
   },
-  "permissions": ["tabs", "history"],
+	"content_scripts": [
+		{
+			"matches": ["*://*/*"],
+			"js": ["contentScript.js"],
+			"run_at": "document_start"
+		}
+	],
+  "permissions": ["tabs", "history", "contextualIdentities", "storage", "cookies"],
   "commands": {
     "_execute_sidebar_action": {
       "suggested_key": {
@@ -27,6 +34,11 @@
 		"toggle-last-tab": {
 			"suggested_key": {
 				"default": "MacCtrl+Shift+J"
+			}
+		},
+		"create-new-tab-container": {
+			"suggested_key": {
+				"default": "MacCtrl+Ctrl+N"
 			}
 		}
   }

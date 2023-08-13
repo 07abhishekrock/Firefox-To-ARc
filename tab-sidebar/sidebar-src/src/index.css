@@ -2,6 +2,10 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+*, *::after, *::before {
+	box-sizing: border-box;
+}
+
 ::-webkit-scrollbar {
   width: 2px;
   height: 2px;

@@ -1,8 +1,6 @@
 import * as React from 'react';
 
 import { useSearchResults } from '../../hooks/useSearchResults';
-import { reorderTabsBasedOnHostname } from '../../utils/tabs';
-
 import SearchBar from '../SearchBar';
 import SearchItem from '../SearchItem';
 import TabItem from '../TabItem';
@@ -10,7 +8,7 @@ import TabItem from '../TabItem';
 
 const SearchResults = () => {
   const [ searchString, setSearchString ] = React.useState('');
-  const { searchResults, focusResult, resetSearchResults } = useSearchResults(searchString);
+  const { searchResults, focusResult, resetSearchResults, removeTab, updateTab } = useSearchResults(searchString);
   const [ currentFocusedId, setCurrentFocusedId ] = React.useState<string | undefined | null>(null);
 
 
@@ -25,7 +23,6 @@ const SearchResults = () => {
   React.useEffect(() => {
     const onTabUpdatedOrChanged = () => {
       resetSearchResults(searchString);
-      reorderTabsBasedOnHostname();
     };
 
 
@@ -36,28 +33,27 @@ const SearchResults = () => {
 
     const onTabActivated = (activeInfo: browser.tabs._OnActivatedActiveInfo) => {
       activeInfo && activeInfo.tabId && setCurrentFocusedId(activeInfo.tabId.toString());
-      resetSearchResults(searchString);
     };
 
     if (typeof browser !== 'undefined') {
-      browser.tabs.onUpdated.addListener(onTabUpdatedOrChanged);
+      browser.tabs.onUpdated.addListener(updateTab);
       browser.tabs.onCreated.addListener(onTabUpdatedOrChanged);
-      browser.tabs.onRemoved.addListener(onTabUpdatedOrChanged);
+      browser.tabs.onRemoved.addListener(removeTab);
       browser.tabs.onActivated.addListener(onTabActivated);
       browser.tabs.onMoved.addListener(onTabsMoved);
     }
 
     return () => {
       if (typeof browser !== 'undefined') {
-        browser.tabs.onUpdated.removeListener(onTabUpdatedOrChanged);
+        browser.tabs.onUpdated.removeListener(updateTab);
         browser.tabs.onCreated.removeListener(onTabUpdatedOrChanged);
-        browser.tabs.onRemoved.removeListener(onTabUpdatedOrChanged);
+        browser.tabs.onRemoved.removeListener(removeTab);
         browser.tabs.onActivated.removeListener(onTabActivated);
         browser.tabs.onMoved.removeListener(onTabsMoved);
       }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ searchString ]);
+  }, [ searchString, removeTab ]);
 
 
   React.useEffect(() => {
