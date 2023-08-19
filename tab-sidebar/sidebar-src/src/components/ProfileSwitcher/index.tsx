@@ -1,59 +1,21 @@
 import { animated } from '@react-spring/web';
-import React, { useEffect, useCallback } from 'react';
-import { useCurrentWindow } from '../../hooks/useCurrentWindow';
-import { useDefaultAndSelectedProfile } from '../../hooks/useDefaultAndSelectedProfile';
+import React, { useEffect } from 'react';
+import {useGetLastSelectedProfile} from '../../hooks/useGetLastSelectedProfile';
 import { Profile, useGetProfiles } from '../../hooks/useGetProfiles';
+import {useScreenController} from '../../store/useScreenController';
 
 
 const ProfileSwitcherContent = ({ profiles }: { profiles: Profile[] }) => {
-  const { lastSelectedProfileKey: selectedProfile, defaultProfile, changeLastSelectedProfile } = useDefaultAndSelectedProfile();
-
-  useCurrentWindow(
-    useCallback((currentWindow, closedWindowId) => {
-      if (closedWindowId === currentWindow) {
-        changeLastSelectedProfile(undefined);
-      }
-    }, [])
-  );
-
+  const [ selectedProfile, changeLastSelectedProfile ] = useGetLastSelectedProfile();
+	const { changeScreenTo } = useScreenController();
 
   useEffect(() => {
-    if (!selectedProfile) {
-      if (defaultProfile) {
-        changeLastSelectedProfile(defaultProfile);
-      }
+    if (typeof selectedProfile === 'undefined') {
+			// no profile was set ever
+			changeScreenTo('change-default-profile');		
+    } 
 
-    } else {
-      changeLastSelectedProfile(selectedProfile);
-    }
-
-    if (typeof browser !== 'undefined') {
-      const onSwitchCommands = (command: string) => {
-
-        const currentIndex = profiles.findIndex(s => s.id === selectedProfile?.name);
-
-        if (command === 'switch-profile-right') {
-          changeLastSelectedProfile(profiles[(currentIndex + 1) % profiles.length]);
-
-        } else if (command === 'switch-profile-left') {
-          if (currentIndex === 0) {
-            changeLastSelectedProfile(profiles[profiles.length - 1]);
-
-          } else {
-            changeLastSelectedProfile(profiles[currentIndex - 1]);
-          }
-        }
-      };
-
-      browser.commands.onCommand.addListener(onSwitchCommands);
-
-      return () => {
-        browser.commands.onCommand.removeListener(onSwitchCommands);
-      };
-
-    }
-
-  }, [ selectedProfile, profiles, defaultProfile ]);
+  }, [ selectedProfile, changeScreenTo ]);
 
   return <div className="bg-nord1 pt-2">
     <div className="relative bg-nord1 overflow-hidden">

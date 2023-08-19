@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import DrawerTitle from '../../components/DrawerTitle';
-import { useDefaultAndSelectedProfile } from '../../hooks/useDefaultAndSelectedProfile';
+import {useGetLastSelectedProfile} from '../../hooks/useGetLastSelectedProfile';
 import { useGetProfiles } from '../../hooks/useGetProfiles';
 
 
@@ -39,12 +39,12 @@ const SelectDefaultProfile = () => {
 
   const { profiles } = useGetProfiles();
 
-  const { defaultProfile, changeDefaultProfile } = useDefaultAndSelectedProfile();
+	const [ lastSelectedProfile , setLastSelectedProfile ] = useGetLastSelectedProfile();
 
   return <>
     <DrawerTitle drawerTitle="Profiles"/>
     <div className="mt-8"/>
-    <DefaultProfileItem defaultProfile={defaultProfile}/>
+    <DefaultProfileItem defaultProfile={lastSelectedProfile}/>
     <h3 className="text-lg mt-8 mb-4">Other Profiles</h3>
     {
       profiles.map((profile) => {
@@ -52,7 +52,7 @@ const SelectDefaultProfile = () => {
           name={profile.name}
           onClick={
             () => {
-              changeDefaultProfile(profile);
+							setLastSelectedProfile(profile);
             }
           }
         />;

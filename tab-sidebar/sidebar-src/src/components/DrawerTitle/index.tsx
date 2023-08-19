@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useSpringValue, animated } from '@react-spring/web';
-import { FaHome } from 'react-icons/fa';
+import { FaWindowClose, FaHome, FaWind } from 'react-icons/fa';
 import { useScreenController } from '../../store/useScreenController';
 
 
-const DrawerTitle = ({ drawerTitle }: {drawerTitle?: string}) => {
+const DrawerTitle = ({ drawerTitle, hideHomeIcon }: {drawerTitle?: string, hideHomeIcon?: boolean}) => {
 
   const barWidth = useSpringValue('0%');
   const pillPos = useSpringValue(100);
@@ -22,10 +22,16 @@ const DrawerTitle = ({ drawerTitle }: {drawerTitle?: string}) => {
   return <div>
     <h2 className="text-2xl font-semibold tracking-wider flex gap-2">
       <span className="flex-grow">{drawerTitle ?? 'Your TABS'}</span>
-      <FaHome size="20"
-        className="cursor-pointer"
-        onClick={() => changeScreenTo('tab-navigation')}
-      />
+      { 
+				!hideHomeIcon && <FaHome size="20"
+					className="cursor-pointer"
+					onClick={() => changeScreenTo('tab-navigation')}
+				/>
+			}
+			<FaWindowClose size="20"
+				className="cursor-pointer"
+				onClick={() => typeof browser !== 'undefined' && browser.sidebarAction.toggle()}
+			/>
     </h2>
     <animated.div className="mt-3 h-0.5 w-[100%] bg-nord4 rounded-sm relative"
       style={
