@@ -45,7 +45,6 @@ if(typeof browser !== 'undefined'){
 						if(data?.state?.lastSelectedProfileKey){
 							// last selected profile exists
 							browser.tabs.create({
-								url: 'https://google.in',
 								cookieStoreId: data.state.lastSelectedProfileKey.cookieStoreId
 							})
 						}
