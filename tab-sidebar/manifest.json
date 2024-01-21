@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "tab-manager",
   "description": "Tab Manager - Arc to Firefox",
-  "version": "1.0",
+  "version": "1.2",
 	"background": {
 		"scripts": ["background-script.js"],
 		"persistent": true 
@@ -28,7 +28,7 @@
 		"toggle-last-tab": {
 			"suggested_key": {
 				"default": "MacCtrl+Shift+J",
-				"linux": "Ctrl+Shift+J"
+				"linux": "Alt+Shift+J"
 			}
 		},
 		"create-new-tab-container": {

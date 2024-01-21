@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "buildWithoutTsc": "vite build",
     "start": "ls src/**/**/*.{tsx,ts} | entr -r pnpm buildWithoutTsc",
-		"zip-extension": "cd ../ && ./copy-script.sh && cd ./sidebar-src",
+		"zip-extension": "cd ../ && rm -Rf tab-sidebar-zip && ./copy-script.sh && cd tab-sidebar-zip && zip extension.zip -r .",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start:firefox": "web-ext run --source-dir ../"
