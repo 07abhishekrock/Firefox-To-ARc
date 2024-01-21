@@ -16,7 +16,8 @@
   "commands": {
     "_execute_sidebar_action": {
       "suggested_key": {
-        "default": "Ctrl+Shift+L"
+        "default": "Ctrl+Shift+L",
+				"linux": "Ctrl+Shift+L"
       }
     },
 		"close-tab" : {
@@ -26,22 +27,26 @@
 		},
 		"toggle-last-tab": {
 			"suggested_key": {
-				"default": "MacCtrl+Shift+J"
+				"default": "MacCtrl+Shift+J",
+				"linux": "Ctrl+Shift+J"
 			}
 		},
 		"create-new-tab-container": {
 			"suggested_key": {
-				"default": "MacCtrl+Ctrl+N"
+				"default": "MacCtrl+Ctrl+N",
+				"linux": "Alt+Shift+N"
 			}
 		},
 		"switch-profile-right": {
 			"suggested_key": {
-				"default": "MacCtrl+Ctrl+L"
+				"default": "MacCtrl+Ctrl+L",
+				"linux": "Alt+Shift+L"
 			}
 		},
 		"switch-profile-left": {
 			"suggested_key": {
-				"default": "MacCtrl+Ctrl+H"
+				"default": "MacCtrl+Ctrl+H",
+				"linux": "Alt+Shift+S"
 			}
 		}
   }
