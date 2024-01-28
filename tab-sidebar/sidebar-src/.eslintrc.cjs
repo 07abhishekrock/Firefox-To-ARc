@@ -14,7 +14,10 @@ module.exports = {
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true }
-    ]
+    ],
+		'eslint-react-hooks/rules-of-hooks': [
+			'off'
+		]
   },
   settings: {
     'import/resolver': {

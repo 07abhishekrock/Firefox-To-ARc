@@ -1,0 +1,35 @@
+@use './variables.scss' as variables;
+
+.icon {
+	font-family: "Material Symbols Outlined";
+
+	&.small {
+		font-size: variables.$font_size_small;
+	}
+
+	&.regular {
+		font-size: variables.$font_size_regular;
+	}
+
+	&.medium {
+		font-size: variables.$font_size_medium
+	}
+
+	&.large {
+		font-size: variables.$font_size_large
+	}
+}
+
+
+.icon_button {
+	background: transparent;
+	border: 0;
+	outline: 0;
+	cursor: pointer;
+	color: inherit;
+	border-radius: variables.$border_radius_0;
+
+	&:hover {
+		background: variables.$backgroundClrWithOpacity;
+	}
+}

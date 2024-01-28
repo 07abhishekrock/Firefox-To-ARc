@@ -1,0 +1,56 @@
+@use './variables.scss' as variables;
+
+.header {
+	font-size: variables.$font_size_regular;
+	padding: variables.$spacing16 variables.$spacing24; 
+	font-weight: 600;
+	border-bottom: 1px dashed variables.$border_color;
+	display: flex;
+	align-items: center;
+}
+
+@keyframes translate_up_and_in {
+	from {
+		transform: translateY(150%);	
+	}
+	to {
+		transform: translateY(0);	
+	}
+}
+
+.headerTitle {
+	display: flex;
+	align-items: center;
+	flex-grow: 1;
+	gap: variables.$spacing8;
+}
+
+.headerButton {
+	border: 0;
+	padding: variables.$spacing8;
+	background: variables.$lighterBackground;
+	color: variables.$primaryColor;
+	font-weight: 600;
+	border-radius: variables.$border_radius_0;
+	cursor: pointer;
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	gap: variables.$spacing8;
+}
+
+.headerButton .circle {
+	width: 12px;
+	height: 12px;
+	border-radius: variables.$border_radius_circle;
+}
+
+.headerButton:hover {
+	background: variables.$lighterBackgroundHover;
+}
+
+.headerSettingSection {
+	display: flex;
+	align-items: center;
+	gap: variables.$spacing8
+}

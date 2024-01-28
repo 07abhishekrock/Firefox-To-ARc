@@ -13,14 +13,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
+    "jsx": "preserve",
+		"jsxImportSource": "solid-js",
 
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+		"baseUrl": "src",
+		"paths": {
+			"@/components/*": ["components$/*"],
+			"van": ["entrypoint.ts"]
+		}
   },
   "include": ["src"],
+	"files": ["./van.d.ts", "./src/helpers/tabs/FirefoxTabController.1.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,0 +1,18 @@
+@use './variables.scss' as variables;
+
+.custom_button {
+	border: 0;
+	outline: 0;
+	font-size: variables.$font_size_regular;
+	padding: variables.$spacing8 variables.$spacing16;
+	border-radius: variables.$border_radius_0;
+
+	&__primary {
+		background: variables.$primaryColor;
+		color: variables.$background;
+		cursor: pointer;
+		&:hover {
+			background: variables.$primaryColorHover;
+		}
+	}
+}

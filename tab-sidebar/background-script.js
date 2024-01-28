@@ -1,3 +1,11 @@
+function transformProfile(profile) {
+    return {
+      id: profile.cookieStoreId,
+      color: profile.colorCode,
+      name: profile.name
+    };
+  }
+
 const safeJsonParse = (value)=>{
 	try{
 		const data = JSON.parse(value);
@@ -36,7 +44,7 @@ const getAllProfiles = withCachePromise(async ()=>{
 const getCurrentSelectedProfile = async ()=>{
 	if(typeof browser !== 'undefined') {
 		const dataFromStorage = await browser.storage.local.get(LAST_SELECTED_PROFILE_KEY);
-		return dataFromStorage[LAST_SELECTED_PROFILE_KEY];
+		return safeJsonParse(dataFromStorage[LAST_SELECTED_PROFILE_KEY]);
 	}
 	return null;
 }
@@ -45,7 +53,7 @@ const setNewLastSelectedProfile = async (valueToSet = "")=>{
 	try{
 		if(typeof browser !== 'undefined' && valueToSet) {
 			await browser.storage.local.set({
-				[LAST_SELECTED_PROFILE_KEY]: valueToSet
+				[LAST_SELECTED_PROFILE_KEY]: JSON.stringify(transformProfile(valueToSet))
 			})
 			await browser.runtime.sendMessage({
 				type: 'profile-changed',
@@ -124,7 +132,7 @@ if(typeof browser !== 'undefined'){
 					if(data){
 						// last selected profile exists
 						browser.tabs.create({
-							cookieStoreId: data.cookieStoreId
+							cookieStoreId: data.id
 						})
 					}
 					else{

@@ -1,0 +1,41 @@
+$nord0_color: #2e3440;
+$nord1_color: #3b4252;
+$nord2_color: #434c5e;
+$nord3_color: #4c566a;
+$nord4_color: #d8dee9;
+$nord5_color: #e5e9f0;
+$nord6_color: #eceff4;
+$nord12_color: #d08770;
+$nord15_color: #b48ead;
+
+$border_color: rgba(216, 222, 233, 0.19);
+
+$spacing4: 4px;
+$spacing8: 8px;
+$spacing10: 10px;
+$spacing12: 12px;
+$spacing14: 14px;
+$spacing16: 16px;
+$spacing24: 24px;
+$spacing32: 32px;
+
+$font_size_small: 1em;
+$font_size_regular: 1.2em;
+$font_size_medium: 2em;
+$font_size_large: 3em;
+
+
+$background: $nord0_color;
+$lighterBackground: $nord1_color;
+$lighterBackgroundHover: $nord2_color;
+$lightestBackground: $nord3_color;
+$primaryColor: $nord4_color;
+$primaryColorHover: $nord5_color;
+$backgroundClrWithOpacity: rgba(0, 0, 0, 0.2);
+
+$border_radius_0: 4px;
+$border_radius_circle: 50%;
+
+
+$focused_color: rgba(216, 222, 233, 0.2);
+$focused_color_2: rgba(216, 222, 233, 0.05);

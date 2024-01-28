@@ -1,0 +1,30 @@
+@use './variables.scss' as variables;
+
+.search_bar {
+	position: relative;
+	padding: variables.$spacing8;
+	margin-top: variables.$spacing24;
+	margin-bottom: variables.$spacing16;
+	background: variables.$lighterBackground;
+	border-radius: variables.$border_radius_0;
+	display: flex;
+	align-items: center;
+	gap: variables.$spacing4;
+}
+
+
+.search_bar__input {
+	background: transparent;
+	font-weight: 600;
+	border: 0;
+	outline: 0;
+	flex-grow: 1;
+	align-self: stretch;
+	color: variables.$primaryColor;
+	font-size: variables.$font_size_regular;
+	transition: outline 0.3s ease-out;
+}
+
+.search_bar:focus-within {
+	outline: 1px solid variables.$primaryColor;
+}
