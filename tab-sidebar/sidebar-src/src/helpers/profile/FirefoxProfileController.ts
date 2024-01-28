@@ -1,5 +1,5 @@
 import { gracefullySuppressErrors } from 'helpers/utils/helpers';
-import { ProfileController, ProfileItem } from './ProfileController';
+import { ProfileController, ProfileItem, allTabsProfile } from './ProfileController';
 
 class FirefoxProfileController implements ProfileController {
 
@@ -28,7 +28,10 @@ class FirefoxProfileController implements ProfileController {
     return gracefullySuppressErrors(async () => {
       const profiles = await browser.contextualIdentities.query({});
 
-      return profiles.map(FirefoxProfileController.transformProfile);
+      return [
+        ...profiles.map(FirefoxProfileController.transformProfile),
+        allTabsProfile
+      ];
     }, Promise.resolve([] as ProfileItem[]));
   };
 

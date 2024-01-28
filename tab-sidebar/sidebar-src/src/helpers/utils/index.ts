@@ -1,11 +1,11 @@
-export const debounce = <T>(debounceFn: (arg: T)=>void, durationInMs = 50) => {
+export const debounce = (debounceFn: (...args: any)=>void, durationInMs = 50) => {
 
   const timeoutId = 0;
 
-  return (arg: T) => {
+  return (...args: any) => {
     clearTimeout(timeoutId);
     setTimeout(() => {
-      debounceFn(arg);
+      debounceFn(...args);
     }, durationInMs);
   };
 

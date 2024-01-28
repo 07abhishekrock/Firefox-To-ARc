@@ -14,7 +14,7 @@
   },
   "permissions": ["tabs", "history", "contextualIdentities", "storage", "cookies"],
   "commands": {
-    "_execute_sidebar_action": {
+    "sidebar-action": {
       "suggested_key": {
         "default": "Ctrl+Shift+L",
 				"linux": "Ctrl+Shift+L"
@@ -47,6 +47,12 @@
 			"suggested_key": {
 				"default": "MacCtrl+Ctrl+H",
 				"linux": "Alt+Shift+S"
+			}
+		},
+		"open-media-tabs": {
+			"suggested_key": {
+				"default": "MacCtrl+Ctrl+M",
+				"linux": "Alt+Shift+O"
 			}
 		}
   }

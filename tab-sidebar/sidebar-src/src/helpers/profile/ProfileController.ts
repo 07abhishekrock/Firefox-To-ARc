@@ -10,3 +10,9 @@ export interface ProfileController {
   getCurrentProfile: ()=>ProfileItem;
   subscribeToProfileChange: (cb: (newProfile: ProfileItem)=>void)=>void;
 }
+
+export const allTabsProfile: ProfileItem = {
+  name: 'All',
+  color: '#FFF',
+  id: '$$$$'
+} as const;

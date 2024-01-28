@@ -36,7 +36,15 @@ const withCachePromise = (cb)=>{
 
 const getAllProfiles = withCachePromise(async ()=>{
 	if(typeof browser !== 'undefined') {
-		return await browser.contextualIdentities.query({})
+		const allProfiles = await browser.contextualIdentities.query({})
+		return [
+			...allProfiles,
+			{
+        name: "All",
+        colorCode: "#FFF",
+        cookieStoreId: "$$$$"
+			}
+		]
 	}
 	return [];
 })
@@ -49,7 +57,7 @@ const getCurrentSelectedProfile = async ()=>{
 	return null;
 }
 
-const setNewLastSelectedProfile = async (valueToSet = "")=>{
+const setNewLastSelectedProfile = async (valueToSet)=>{
 	try{
 		if(typeof browser !== 'undefined' && valueToSet) {
 			await browser.storage.local.set({
@@ -58,7 +66,7 @@ const setNewLastSelectedProfile = async (valueToSet = "")=>{
 			await browser.runtime.sendMessage({
 				type: 'profile-changed',
 				data: {
-					newProfile: valueToSet
+					newProfile: transformProfile(valueToSet)
 				}
 			})
 			// await browser.notifications.create({
@@ -86,6 +94,8 @@ if(typeof browser !== 'undefined'){
 	})
 
 	browser.commands.onCommand.addListener(async (command)=>{
+
+		console.log({command, isCommand : command === 'open-media-tabs'})
 
 		if(command === 'toggle-last-tab'){
 			// go back
@@ -124,11 +134,26 @@ if(typeof browser !== 'undefined'){
 			}
 		}
 
+		if(command === 'sidebar-action'){
+			browser.sidebarAction.setPanel({ 
+				panel: "./sidebar-src/dist/index.html"
+			});
+			browser.sidebarAction.toggle();
+
+		}
+
+		if(command === 'open-media-tabs'){
+			browser.sidebarAction.setPanel({ 
+				panel: "./sidebar-src/dist/index_media.html"
+			});
+			browser.sidebarAction.toggle();
+		}
+
 		if(command === 'create-new-tab-container'){
 			browser.storage.local
 				.get(LAST_SELECTED_PROFILE_KEY)
 				.then((value)=>{
-					const data = value[LAST_SELECTED_PROFILE_KEY]
+					const data = safeJsonParse(value[LAST_SELECTED_PROFILE_KEY])
 					if(data){
 						// last selected profile exists
 						browser.tabs.create({

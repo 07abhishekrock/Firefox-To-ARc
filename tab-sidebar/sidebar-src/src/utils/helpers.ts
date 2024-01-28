@@ -1,4 +1,7 @@
-export const safeJsonParse = (jsonString: string): object | Array<unknown> | null => {
+import { useCurrentTab } from '@/components/Header/currentTabsType.state';
+import { useStorageController } from 'helpers/storage/useStorageController';
+
+export const safeJsonParse = (jsonString: string): any => {
   try {
 
     if (!jsonString) return null;
@@ -17,4 +20,20 @@ export const limitToMaxChars = (stringToLimit: string, charLength: number) => {
   }
 
   return stringToLimit.slice(0, charLength - 3).concat('...');
+};
+
+export const initializeTabViewType = async () => {
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [ , setCurrentTabType ] = useCurrentTab();
+
+  const currentTabViewTypeDict = window.__isMediaTab;
+
+
+  if (currentTabViewTypeDict) {
+
+    setCurrentTabType('media');
+   // reset back to tabs
+  }
+
 };

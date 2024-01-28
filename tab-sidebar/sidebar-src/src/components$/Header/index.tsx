@@ -2,12 +2,15 @@ import Icon from '../Icon';
 import HeaderButton from '../HeaderButton';
 import { useCurrentTab } from './currentTabsType.state';
 import { useCurrentProfile } from '../TabListContainer/tabList.state';
+import { initializeTabViewType } from 'utils/helpers';
 
 
 const Header = () => {
 
   const [ currentTabState ] = useCurrentTab();
   const [ profile ] = useCurrentProfile();
+
+  initializeTabViewType();
 
 
   const currentTabText = () => {

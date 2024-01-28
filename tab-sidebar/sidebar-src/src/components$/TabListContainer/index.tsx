@@ -1,5 +1,5 @@
 import TabItem from '../TabItem';
-import { For, onCleanup, onMount } from 'solid-js';
+import { For, onCleanup } from 'solid-js';
 import {
   initializeProfile,
   subscribeToExternalProfileChange,
@@ -10,6 +10,7 @@ import { useTabController } from 'helpers/tabs/controller';
 import Fallback from './Fallback';
 import { useSearchBar } from '../SearchBar/useSearchBar';
 import { useProfileController } from 'helpers/profile/useProfileController';
+import { useCurrentTabFilter } from '../Header/currentTabsType.state';
 
 
 const TabListContainer = () => {
@@ -19,6 +20,7 @@ const TabListContainer = () => {
   const [ searchString ] = useSearchBar();
   const profileController = useProfileController();
   const [ , setProfile ] = useCurrentProfile();
+  const tabFilter = useCurrentTabFilter();
 
   const unsubscribeCallback = profileController.subscribeToProfileChange((nProfile) => {
     setProfile(nProfile);
@@ -56,7 +58,9 @@ const TabListContainer = () => {
 
     const tester = firefoxTabController.doesQueryMatchWithTab(searchString());
 
-    if (tester(tab.title, tab.url)) {
+    console.log({ filter: tabFilter(tab.url ?? '') });
+
+    if (tester(tab.title, tab.url) && tabFilter(tab.url ?? '')) {
       setTabListItemsState(old => {
         return [
           ...old,
@@ -93,13 +97,6 @@ const TabListContainer = () => {
         return s;
       }) ];
     });
-  });
-
-
-  onMount(async () => {
-    const queriedTabs = await firefoxTabController.queryTabs('');
-
-    setTabListItemsState(queriedTabs);
   });
 
   onCleanup(async () => {

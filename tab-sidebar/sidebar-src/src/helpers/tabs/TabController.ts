@@ -4,7 +4,7 @@ export interface TabController {
   queryTabs: (queryStr: string) => Promise<TabItemType[]>;
   toggleMuteForTab: (tabId: number, isMuted: boolean)=>Promise<void>;
   closeTab: (tabId: number)=>Promise<void>;
-  openTab: (url: string)=>Promise<void>;
+  openTab: (url: string, extraArgs?: Partial<TabItemType>)=>Promise<void>;
   activateTab: (tabId: number)=>void;
   subscribeToTabUpdated: (callback: (tab: TabItemType)=>void)=>()=>void;
   subscribeToTabCreated: (callback: (newTab: TabItemType)=>void)=>()=>void;

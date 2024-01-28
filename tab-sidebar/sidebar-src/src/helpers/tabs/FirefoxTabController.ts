@@ -78,11 +78,12 @@ export class FirefoxTabController implements TabController {
   };
 
 
-  openTab = async (url: string) => {
+  openTab = async (url: string, extraArgs?: Partial<TabItemType>) => {
 
     return gracefullySuppressErrors(async () => {
       await browser.tabs.create({
-        url
+        url,
+        ...extraArgs
       });
     }, undefined);
   };
