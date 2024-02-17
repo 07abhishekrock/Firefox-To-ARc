@@ -1,5 +1,4 @@
 import { useCurrentTab } from '@/components/Header/currentTabsType.state';
-import { useStorageController } from 'helpers/storage/useStorageController';
 
 export const safeJsonParse = (jsonString: string): any => {
   try {
