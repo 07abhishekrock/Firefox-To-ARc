@@ -5,7 +5,7 @@
 		"type": "commonjs",
 		"scripts": {
 				"copy:assets": "cp -R public/ ./dist/assets/",
-				"build": "tsc && esbuild src/entrypoint.tsx --outdir=dist --bundle --platform=browser --format=esm --jsx-factory=solid-js",
+				"build": "sass src/index.scss dist/output.css && node esbuild.config.cjs",
 				"dev": "concurrently \"pnpm start:firefox\" \"pnpm sass:dev\" \"pnpm js:dev\" ",
 				"serve": "npx serve dist",
 				"js:dev": "fdfind --type=file | entr -s 'node esbuild.config.cjs'",

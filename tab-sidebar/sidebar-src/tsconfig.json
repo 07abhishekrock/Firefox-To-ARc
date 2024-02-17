@@ -28,6 +28,6 @@
 		}
   },
   "include": ["src"],
-	"files": ["./van.d.ts", "./src/helpers/tabs/FirefoxTabController.1.ts"],
+	"files": [],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
