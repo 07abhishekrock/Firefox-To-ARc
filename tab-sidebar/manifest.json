@@ -12,6 +12,20 @@
     "default_title" : "Firefox To Arc",
     "default_panel": "./sidebar-src/dist/index.html"
   },
+	"content_scripts": [
+		{
+			"matches": ["*://youtube.com/*", "*://www.youtube.com/*" ],
+			"js": ["contentScripts/youtube_controller.js"]
+		},
+		{
+			"matches": ["*://music.youtube.com/*", "*://www.music.youtube.com/*"],
+			"js": ["contentScripts/music_youtube_controller.js"]
+		},
+		{
+			"matches": ["*://meet.google.com/*", "*://www.meet.google.com/*"],
+			"js": ["contentScripts/gmeet_controller.js"]
+		}
+	],
   "permissions": ["tabs", "history", "contextualIdentities", "storage", "cookies"],
   "commands": {
     "sidebar-action": {

@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
 import PaddingWrapper from './components$/PaddingWrapper';
 import TabListContainer from './components$/TabListContainer';
+import FooterMediaSection from './components$/FooterMediaSection';
 
 
 const App = () => {
@@ -13,9 +14,10 @@ const App = () => {
     <PaddingWrapper>
       <SearchBar/>
     </PaddingWrapper>
-    <PaddingWrapper>
+    <PaddingWrapper grow={1}>
       <TabListContainer/>
     </PaddingWrapper>
+    <FooterMediaSection/>
   </div>);
 };
 

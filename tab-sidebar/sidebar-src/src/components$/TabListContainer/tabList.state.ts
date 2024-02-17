@@ -1,11 +1,12 @@
-import { createSignal } from 'solid-js';
+import { createEffect, createSignal } from 'solid-js';
 import { TabItemType } from '../TabItem/types';
-import { ProfileItem } from 'helpers/profile/ProfileController';
+import { ProfileItem, allTabsProfile } from 'helpers/profile/ProfileController';
 import { useStorageController } from 'helpers/storage/useStorageController';
 import { safeJsonParse } from 'utils/helpers';
 import { useProfileController } from 'helpers/profile/useProfileController';
 import { gracefullySuppressErrors } from 'helpers/utils/helpers';
 import { useMessageController } from 'helpers/message/useMessageController';
+import { useTabController } from 'helpers/tabs/controller';
 
 export const LAST_SELECTED_PROFILE_KEY = 'last-selected-profile';
 export const PROFILE_CHANGE_MESSAGE_KEY = 'profile-changed';
@@ -47,7 +48,7 @@ export async function initializeProfile() {
 	const allProfiles = await useProfileController().listAllProfiles()
 
   if (typeof profile === 'undefined' || profile === null || !profile) {
-    const profileToSet = allProfiles[0];
+    const profileToSet = allTabsProfile;
 
     profileController.setProfile(profileToSet);
     setProfileInStorage(JSON.stringify(profileToSet));
@@ -69,4 +70,59 @@ export const useTabListItems = () => {
 
 export const useCurrentProfile = () => {
   return [ profileKey, setProfileKey ] as ReturnType<typeof createSignal<ProfileItem>>;
+};
+
+
+export enum MEDIA_TYPE_KEYS {
+  YOUTUBE,
+  MEETS,
+  YOUTUBE_MUSIC
+}
+
+const WHITELISTED_ENTRIES = {
+  [MEDIA_TYPE_KEYS.YOUTUBE_MUSIC]: [ 'music.youtube.com', 'www.music.youtube.com' ],
+  [MEDIA_TYPE_KEYS.YOUTUBE]: [ 'youtube.com', 'www.youtube.com' ],
+  [MEDIA_TYPE_KEYS.MEETS]: [ 'meet.google.com', 'www.meet.google.com' ]
+};
+
+export const [ audibleTabs, setAudibleTabs ] = createSignal<{
+  [key: string]: TabItemType[];
+}>({});
+
+export const useCurrentAudibleTabs = () => {
+
+  const [ allTabs ] = useTabListItems();
+
+  createEffect(() => {
+    const audibleTabsLatest = Object.entries(WHITELISTED_ENTRIES).reduce((
+      tabsDict,
+      [ mediaType, whitelistedUrls ]
+    ) => {
+      tabsDict[mediaType] = allTabs().filter(t => {
+        try {
+          const urlDomain = new URL(t.url ?? '');
+
+          return whitelistedUrls.includes(urlDomain.hostname);
+
+        } catch (e) {
+          return false;
+        }
+      }
+      ).sort(tD => tD.isAudioTab === true ? -1 : 1);
+
+      return tabsDict;
+    }, {} as {[key: string]: TabItemType[]});
+
+    setAudibleTabs(audibleTabsLatest);
+
+  });
+
+};
+
+export const useTabListItemsBasedOnSearch = (searchString: string) => {
+
+  const tabController = useTabController();
+
+  return tabController.doesQueryMatchWithTab(searchString);
+
 };

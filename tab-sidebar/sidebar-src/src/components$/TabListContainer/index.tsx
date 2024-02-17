@@ -1,26 +1,53 @@
 import TabItem from '../TabItem';
-import { For, onCleanup } from 'solid-js';
+import { For, createEffect, onCleanup } from 'solid-js';
 import {
   initializeProfile,
   subscribeToExternalProfileChange,
   useCurrentProfile,
-  useTabListItems
+  useTabListItems,
+  useTabListItemsBasedOnSearch
 } from './tabList.state';
 import { useTabController } from 'helpers/tabs/controller';
 import Fallback from './Fallback';
 import { useSearchBar } from '../SearchBar/useSearchBar';
 import { useProfileController } from 'helpers/profile/useProfileController';
 import { useCurrentTabFilter } from '../Header/currentTabsType.state';
+import { allTabsProfile } from 'helpers/profile/ProfileController';
+
+
+const getCurrentListOfTabs = (tester: any) => {
+  const [ tabListItemsState ] = useTabListItems();
+  const [ currentProfile ] = useCurrentProfile();
+
+  return tabListItemsState().filter((tabItem) => {
+
+    let isTabIncludedInCurrentProfile = false;
+
+    if (!currentProfile()) {
+      isTabIncludedInCurrentProfile = true;
+
+    } else if (currentProfile().name === allTabsProfile.name) {
+      isTabIncludedInCurrentProfile = true;
+
+    } else if (currentProfile().id === tabItem.containerId) {
+      isTabIncludedInCurrentProfile = true;
+    }
+
+    return tester(tabItem.title, tabItem.url) && isTabIncludedInCurrentProfile;
+
+  });
+};
 
 
 const TabListContainer = () => {
 
-  const [ tabListItemsState, setTabListItemsState ] = useTabListItems();
+  const [ , setTabListItemsState ] = useTabListItems();
   const firefoxTabController = useTabController();
   const [ searchString ] = useSearchBar();
   const profileController = useProfileController();
   const [ , setProfile ] = useCurrentProfile();
   const tabFilter = useCurrentTabFilter();
+  const testerForSearch = useTabListItemsBasedOnSearch(searchString());
 
   const unsubscribeCallback = profileController.subscribeToProfileChange((nProfile) => {
     setProfile(nProfile);
@@ -36,7 +63,6 @@ const TabListContainer = () => {
     if (typeof tabItemId !== 'undefined') {
       firefoxTabController.activateTab(tabItemId);
     }
-
   };
 
   const unsubscribeToUpdatedTabEvent = firefoxTabController.subscribeToTabUpdated((tab) => {
@@ -57,8 +83,6 @@ const TabListContainer = () => {
   const unsubscribeToCreatedTabEvent = firefoxTabController.subscribeToTabCreated((tab) => {
 
     const tester = firefoxTabController.doesQueryMatchWithTab(searchString());
-
-    console.log({ filter: tabFilter(tab.url ?? '') });
 
     if (tester(tab.title, tab.url) && tabFilter(tab.url ?? '')) {
       setTabListItemsState(old => {
@@ -99,6 +123,14 @@ const TabListContainer = () => {
     });
   });
 
+  createEffect(async () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const tabController = useTabController();
+    const allTabs = await tabController.queryTabs('');
+
+    setTabListItemsState(allTabs);
+  });
+
   onCleanup(async () => {
     unsubscribeCallback();
     unsubscribeFromExternalMessage();
@@ -109,14 +141,17 @@ const TabListContainer = () => {
   });
 
   return <ul class="tabList">
-    <For each={tabListItemsState()}
+    <For each={getCurrentListOfTabs(testerForSearch)}
       fallback={<Fallback/>}
     >
       {
-        (tabItem) =>
-          <li onClick={() => activateTab(tabItem.id)}>
+
+        (tabItem) => {
+          return <li onClick={() => activateTab(tabItem.id)}>
             <TabItem {...tabItem} />
-          </li>
+          </li>;
+
+        }
       }
     </For>
   </ul>;

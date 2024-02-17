@@ -1,0 +1,65 @@
+@use './variables.scss' as variables;
+
+.footer_media_section {
+	background: variables.$backgroundClrWidgetBackdrop;
+	color: black;
+	padding: variables.$spacing12 0px; 
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	gap: 10px;
+	padding: 10px;
+}
+
+.footer-media-unit.hidden {
+	display: none;
+}
+
+.footer-media-unit__top-container__title {
+	font-size: variables.$font_size_regular;
+	text-overflow: ellipsis;
+	flex-grow: 1;
+}
+
+.footer-media-unit{
+	display: flex;
+	align-items: stretch;
+
+	&__top-container{
+		display: flex;
+		flex-grow: 1;
+		background-color: variables.$backgroundClrWidget;
+		padding: variables.$spacing4;
+		border-radius: variables.$border_radius_0;
+		align-items: center;
+		align-self: stretch;
+		gap: variables.$spacing8;
+		margin-right: 5px;
+	}
+	&__bottom-container{
+		display: flex;
+		gap: 5px;
+		& > * {
+			background-color: variables.$backgroundClrWidget;
+			height: 100%;
+		}
+	}
+	&__button {
+		position: relative;
+		display: grid;
+		place-items: center;
+		border: 0;
+		padding: variables.$spacing4;
+		flex-grow: 1;
+		text-align: center;
+		width: variables.$spacing32;
+		border-radius: variables.$border_radius_0;
+		cursor: pointer;
+
+		&:hover {
+			background-color: variables.$lightestBackground;
+			color: white;
+		}
+
+	}
+}

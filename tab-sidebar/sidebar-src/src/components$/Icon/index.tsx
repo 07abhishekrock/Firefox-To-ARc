@@ -9,22 +9,22 @@ export type IconProps = {
 
 
 const Icon = (
-  { sizeType, iconName = 'small', iconSize } : IconProps
+  props : IconProps
 ) => {
 
   const getClassName = () => {
-    if (typeof iconSize !== 'undefined') {
+    if (typeof props.iconSize !== 'undefined') {
       return '';
     }
 
-    return sizeType;
+    return props.sizeType ?? 'small';
 
   };
 
 
   const getInlineStyleForIconSize = () => {
     return {
-      fontSize: iconSize
+      fontSize: props.iconSize
     };
   };
 
@@ -36,7 +36,7 @@ const Icon = (
   }
   style={getInlineStyleForIconSize()}
   >
-    {iconName}
+    {props.iconName}
   </span>;
 };
 
