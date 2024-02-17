@@ -28,4 +28,15 @@ export type TabRuntimeMessage = {
   id: 'YOUTUBE::RECEIVE_LATEST_PLAYBACK';
   paused: boolean;
   title: string;
+} | {
+  id: 'GMEET:GET_LATEST_MUTE_STATUS';
+  muted: boolean;
+  title: string;
+} | {
+  id: 'GMEET:RECEIVE_LATEST_MUTE_STATUS';
+  muted: boolean;
+  title: string;
+} | {
+  id: 'GMEET:TOGGLE_MUTE_STATUS';
+  muted: boolean;
 }

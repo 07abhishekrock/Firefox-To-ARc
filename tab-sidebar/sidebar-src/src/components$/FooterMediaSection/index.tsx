@@ -1,11 +1,7 @@
-import { MEDIA_TYPE_KEYS, audibleTabs, useCurrentAudibleTabs } from '../TabListContainer/tabList.state';
+import { useCurrentAudibleTabs } from '../TabListContainer/tabList.state';
+import { GMeetMediaSection } from './GMeetMediaSection';
 import { YoutubeMusicMediaSection } from './YoutubeMusicMediaSection';
 import { YoutubeSection } from './YoutubeSection';
-
-
-const getGMeetMediaTab = () => {
-  return audibleTabs()[MEDIA_TYPE_KEYS.MEETS]?.[0];
-};
 
 
 const FooterMediaSection = () => {
@@ -15,6 +11,7 @@ const FooterMediaSection = () => {
   return <div class="footer_media_section">
     <YoutubeMusicMediaSection/>
     <YoutubeSection/>
+    <GMeetMediaSection/>
   </div>;
 };
 
